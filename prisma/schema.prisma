@@ -7,31 +7,102 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model NewsCandidate {
-  id           Int       @id @default(autoincrement())
-  date         DateTime
-  source       String?
-  author       String?
-  title        String
-  description  String?
-  url          String
-  urlToImage   String?
-  publishedAt  DateTime?
-  content      String?
-  score        Float?
-  createdAt    DateTime  @default(now())
+model ContentItem {
+  id            String   @id @default(uuid())
 
-  videoJobs    VideoJob[]
+  title         String
+  sourceUrl     String
+  source        String?
+  publishedAt   DateTime?
+
+  status        ContentStatus @default(SELECTED)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  video         Video?
 }
 
-model VideoJob {
-  id           Int       @id @default(autoincrement())
-  newsId       Int
-  news         NewsCandidate @relation(fields: [newsId], references: [id])
-  status       String   @default("pending")
-  ytVideoId    String?
-  instaMediaId String?
-  error        String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+enum ContentStatus {
+  SELECTED
+  SCRIPTING
+  AUDIO_GENERATING
+  VIDEO_GENERATING
+  MERGING
+  UPLOADING
+  COMPLETED
+  FAILED
 }
+
+model Video {
+  id            String @id @default(uuid())
+  contentItemId String @unique
+
+  videoPath     String?
+  audioPath     String?
+  thumbnailPath String?
+
+  youtubeVideoId String?
+  youtubeUrl     String?
+
+  uploadStatus   UploadStatus @default(NOT_UPLOADED)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  contentItem    ContentItem @relation(fields: [contentItemId], references: [id])
+  stats          VideoStat?
+}
+
+enum UploadStatus {
+  NOT_UPLOADED
+  UPLOADING
+  UPLOADED
+  FAILED
+}
+
+
+model VideoStat {
+  id        String @id @default(uuid())
+  videoId  String @unique
+
+  views     Int @default(0)
+  likes     Int @default(0)
+  comments  Int @default(0)
+
+  fetchedAt DateTime @default(now())
+
+  video     Video @relation(fields: [videoId], references: [id])
+}
+
+
+// model NewsCandidate {
+//   id           Int       @id @default(autoincrement())
+//   date         DateTime
+//   source       String?
+//   author       String?
+//   title        String
+//   description  String?
+//   url          String
+//   urlToImage   String?
+//   publishedAt  DateTime?
+//   content      String?
+//   score        Float?
+//   createdAt    DateTime  @default(now())
+
+//   videoJobs    VideoJob[]
+// }
+
+// model VideoJob {
+//   id           Int       @id @default(autoincrement())
+//   newsId       Int
+//   news         NewsCandidate @relation(fields: [newsId], references: [id])
+//   status       String   @default("pending")
+//   ytVideoId    String?
+//   instaMediaId String?
+//   error        String?
+//   createdAt    DateTime @default(now())
+//   updatedAt    DateTime @updatedAt
+// }
+
+
