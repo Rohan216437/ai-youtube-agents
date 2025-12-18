@@ -1,0 +1,246 @@
+{
+  "info": {
+    "name": "AI YouTube Agent API",
+    "description": "Complete API collection for the AI YouTube Agent application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Content APIs",
+      "item": [
+        {
+          "name": "Get News Articles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/content/news",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["content", "news"]
+            },
+            "description": "Fetches top headlines from News API. Requires NEWS_API_KEY in .env file."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Single Content Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Breaking: Major Tech Announcement\",\n  \"sourceUrl\": \"https://example.com/news/article\",\n  \"source\": \"Tech News\",\n  \"publishedAt\": \"2025-12-18T00:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/content/create",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["content", "create"]
+            },
+            "description": "Creates a single content item (selected article) in the database."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Multiple Content Items (Bulk)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"articles\": [\n    {\n      \"title\": \"Article 1 Title\",\n      \"sourceUrl\": \"https://example.com/article1\",\n      \"source\": \"News Source\",\n      \"publishedAt\": \"2025-12-18T00:00:00Z\"\n    },\n    {\n      \"title\": \"Article 2 Title\",\n      \"sourceUrl\": \"https://example.com/article2\",\n      \"source\": \"News Source\",\n      \"publishedAt\": \"2025-12-18T00:00:00Z\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/content/create-bulk",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["content", "create-bulk"]
+            },
+            "description": "Creates multiple content items at once (up to 3 articles typically)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Content Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/content/all",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["content", "all"]
+            },
+            "description": "Gets all content items with their status and video information."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pending Content Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/content/pending",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["content", "pending"]
+            },
+            "description": "Gets only content items with SELECTED status (pending video generation)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Content Item by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/content/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["content", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "your-content-id-here",
+                  "description": "UUID of the content item"
+                }
+              ]
+            },
+            "description": "Gets a specific content item by its ID with video and stats information."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Video APIs",
+      "item": [
+        {
+          "name": "Get All Videos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/video/all",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["video", "all"]
+            },
+            "description": "Gets all uploaded videos with their stats and content information."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Video by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/video/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["video", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "your-video-id-here",
+                  "description": "UUID of the video"
+                }
+              ]
+            },
+            "description": "Gets a specific video by its ID with stats and content information."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Video Stats",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"views\": 1000,\n  \"likes\": 50,\n  \"comments\": 10\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/video/:id/stats",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["video", ":id", "stats"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "your-video-id-here",
+                  "description": "UUID of the video"
+                }
+              ]
+            },
+            "description": "Updates video statistics (views, likes, comments). Can update all or individual stats."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pipeline APIs",
+      "item": [
+        {
+          "name": "Run Video Generation Pipeline",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/pipeline/run/:contentId",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["pipeline", "run", ":contentId"],
+              "variable": [
+                {
+                  "key": "contentId",
+                  "value": "your-content-id-here",
+                  "description": "UUID of the content item to generate video for"
+                }
+              ]
+            },
+            "description": "Starts the video generation pipeline for a content item. This runs asynchronously. Use GET /content/:id to check status updates."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
