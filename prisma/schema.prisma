@@ -5,7 +5,9 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  // output   = "../generated/prisma"
 }
+
 
 model ContentItem {
   id            String   @id @default(uuid())
